@@ -1,6 +1,7 @@
 module.exports = {
   name: 'interactionCreate',
   async execute(interaction, bot, config) {
+    if(!bot.sb) return
     if (interaction.isCommand()) {
       const cmd = bot.slashCommands.get(interaction.commandName);
          

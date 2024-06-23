@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
   name: 'messageCreate',
   async execute(message, bot, config) {
+    if(bot.sb) return
     try {
       if (!message.guild || message.author.bot) return;
 
