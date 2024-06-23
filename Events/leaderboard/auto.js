@@ -146,7 +146,7 @@ module.exports = {
                 }
             }
 
-            leaderboard.sort((a, b) => b.NbMSG - a.NbMSG).slice(10);
+            leaderboard.sort((a, b) => (b.joins.join - b.joins.leave) - (a.joins.join - a.joins.leave)).slice(10);
 
             let counter = -1;
 
