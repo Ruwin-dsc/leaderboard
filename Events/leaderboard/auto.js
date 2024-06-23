@@ -8,12 +8,20 @@ module.exports = {
     name: 'ready',
     async execute(bot) {
         if(bot.sb) return
-        const guildList = []
+        let guildList = []
         await bot.db.prepare('SELECT * FROM guild').all().forEach(async g => {
-            const guild = await bot.guilds.fetch(g.id).catch(() => false) || await client.guilds.fetch(g.id).catch(() => false)
-            if(guild) guildList.push(guild)
-            }
-        )
+                const guild = await bot.guilds.fetch(g.id).catch(() => false) || await client.guilds.fetch(g.id).catch(() => false)
+                if(guild) guildList.push(guild)
+                }
+            )
+        setInterval(async () => {
+            guildList = []
+            await bot.db.prepare('SELECT * FROM guild').all().forEach(async g => {
+                const guild = await bot.guilds.fetch(g.id).catch(() => false) || await client.guilds.fetch(g.id).catch(() => false)
+                if(guild) guildList.push(guild)
+                }
+            )
+        }, 50000)
 
         const messages = await bot.channels.cache.get(require('../../config.json').channel.voc).messages.fetch({ limit: 99 });
         const messages2 = await bot.channels.cache.get(require('../../config.json').channel.msg).messages.fetch({ limit: 99 });
@@ -71,7 +79,7 @@ module.exports = {
                 .setTimestamp()
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
                 .setFooter({
-                    text: `L'embed se mettra à jour tous les 10 secondes`,
+                    text: `L'embed se mettra à jour tous les 15 secondes`,
                     iconURL: bot.user.displayAvatarURL({ dynamic: true })
                 })
 
@@ -79,7 +87,7 @@ module.exports = {
             }
 
             await msg.edit({ content: null, embeds: [allEmbed(1)]})
-        }, 10000)
+        }, 15000)
 
         setInterval(async () => {
             let leaderboard = [];
@@ -115,12 +123,12 @@ module.exports = {
                 const current = description.slice(start, end)
                 const embed = new Discord.EmbedBuilder()
                 .setDescription(`\n${current.join('\n\n')}`)
-                .setTitle('💬・Leaderboard Messages')
+                .setTitle('💬・Leaderboard Messages (#TOP 10)')
                 .setColor(0xFFFFFF)
                 .setTimestamp()
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
                 .setFooter({
-                    text: `L'embed se mettra à jour tous les 10 secondes`,
+                    text: `L'embed se mettra à jour tous les 15 secondes`,
                     iconURL: bot.user.displayAvatarURL({ dynamic: true })
                 })
 
@@ -128,7 +136,7 @@ module.exports = {
             }
 
             await msg2.edit({ content: null, embeds: [allEmbed(1)]})
-        }, 10000)
+        }, 15000)
 
         setInterval(async () => {
             let leaderboard = [];
@@ -164,19 +172,19 @@ module.exports = {
                 const current = description.slice(start, end)
                 const embed = new Discord.EmbedBuilder()
                 .setDescription(`\n${current.join('\n\n')}`)
-                .setTitle('・Leaderboard Joins')
+                .setTitle('・Leaderboard Joins (#TOP 10)')
                 .setColor(0xFFFFFF)
                 .setTimestamp()
                 .setThumbnail(bot.user.displayAvatarURL({ dynamic: true }))
                 .setFooter({
-                    text: `L'embed se mettra à jour tous les 10 secondes`,
+                    text: `L'embed se mettra à jour tous les 15 secondes`,
                     iconURL: bot.user.displayAvatarURL({ dynamic: true })
                 })
 
                 return embed
             }
             await msg3.edit({ content: null, embeds: [allEmbed(1)]})
-        }, 10000)
+        }, 15000)
     }
 }
 
