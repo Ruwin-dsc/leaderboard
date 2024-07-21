@@ -14,7 +14,7 @@ exports.run = async (bot, message, args, config) => {
     let page = 1, allEmbed, msg, pageTotal, bouton, bouton2, bouton3
     const guildList = []
     await bot.db.prepare('SELECT * FROM guild').all().forEach(async g => {
-        const guild = await bot.guilds.fetch(g.id).catch(() => false) || await client.guilds.fetch(g.id).catch(() => false)
+        const guild = await bot.guilds.cache.get(g.id) || await client.guilds.cache.get(g.id)
         if(guild) guildList.push(guild)
         }
     )

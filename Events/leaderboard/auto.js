@@ -10,14 +10,14 @@ module.exports = {
         if(bot.sb) return
         let guildList = []
         await bot.db.prepare('SELECT * FROM guild').all().forEach(async g => {
-                const guild = await bot.guilds.fetch(g.id).catch(() => false) || await client.guilds.fetch(g.id).catch(() => false)
+                const guild = await bot.guilds.cache.get(g.id) || await client.guilds.cache.get(g.id)
                 if(guild) guildList.push(guild)
                 }
             )
         setInterval(async () => {
             guildList = []
             await bot.db.prepare('SELECT * FROM guild').all().forEach(async g => {
-                const guild = await bot.guilds.fetch(g.id).catch(() => false) || await client.guilds.fetch(g.id).catch(() => false)
+                const guild = await bot.guilds.cache.get(g.id) || await client.guilds.cache.get(g.id)
                 if(guild) guildList.push(guild)
                 }
             )
