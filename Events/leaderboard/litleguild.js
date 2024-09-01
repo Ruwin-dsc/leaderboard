@@ -72,7 +72,7 @@ module.exports = {
                     `> ${x.mute > 1 ? `Mutes \`${x.mute}\`` : `Mutes: \`${x.mute}\` `} ( ${Math.round((x.mute / x.vocal) * 100)}% )\n` +
                     `> ${x.stream > 1 ? `Streams: \`${x.stream}\`` : `Streams: \`${x.stream}\``}\n` +
                     `> ${x.cam > 1 ? `Caméras: \`${x.cam}\`` : `Caméras: \`${x.cam}\``}\n` +
-                    `> Pic: \`${x.pic}\``;
+                    `> Pic: \`${x.pic}\` (${((x.vocal / x.pic) * 100).toFixed(2) + '%'})`;
             });
 
             pageTotal = Math.ceil(leaderboard.length / 10);
@@ -170,7 +170,8 @@ module.exports = {
                 counter++
                 return `\`${medals[counter] ? medals[counter] : counter }.\` [${x.name}](${x.vanityUrl}) (\`${x.member} membres\`):\n` +
                 `> Joins: \`${x.joins.join} membres\`\n` +
-                `> Leaves: \`${x.joins.leave} membres\`\n`
+                `> Leaves: \`${x.joins.leave} membres\`\n` + 
+                `> Ratio: \`${((x.joins.leave / x.member) * 100).toFixed(2) + '%'}\`\n`
             });
 
             pageTotal = Math.ceil(leaderboard.length / 10);
