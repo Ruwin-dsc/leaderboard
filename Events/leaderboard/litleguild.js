@@ -14,15 +14,22 @@ module.exports = {
                 if(guild && guild.memberCount <= 750) guildList.push(guild)
                 }
             )
-        setInterval(async () => {
-            guildList = []
-            await bot.db.prepare('SELECT * FROM guild').all().forEach(async g => {
-                const guild = await bot.guilds.cache.get(g.id) || await client.guilds.cache.get(g.id)
-                await guild.fetch().catch(() => false)
-                if(guild && guild.memberCount <= 750) guildList.push(guild)
+            setInterval(async () => {
+                guildList = [];
+                const guilds = await bot.db.prepare('SELECT * FROM guild').all();
+                for (const g of guilds) {
+                    let guild = bot.guilds.cache.get(g.id) || client.guilds.cache.get(g.id);
+                    if (!guild) {
+                        guild = await bot.guilds.fetch(g.id).catch(() => null);  
+                    }
+                    if (guild) {
+                        await guild.fetch().catch(() => null);  
+                        if (guild.memberCount <= 750) {
+                            guildList.push(guild);
+                        }
+                    }
                 }
-            )
-        }, 50000)
+            }, 50000);
 
         const messages = await bot.channels.cache.get(require('../../config.json').channel.voc2).messages.fetch({ limit: 99 });
         const messages2 = await bot.channels.cache.get(require('../../config.json').channel.msg2).messages.fetch({ limit: 99 });
